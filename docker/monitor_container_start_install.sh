@@ -11,7 +11,7 @@ RUTA_SERVICIO="/etc/systemd/system/${NOMBRE_SERVICIO}.service"
 # 1. Crear el archivo de unidad de systemd
 cat <<EOF > $RUTA_SERVICIO
 [Unit]
-Description=Servicio de Fondo Persistente para TrueNAS
+Description=Monitor de eventos Docker para conectar NPM a todas las redes al iniciar contenedores
 After=network.target storage.target
 
 [Service]
@@ -35,3 +35,4 @@ systemctl daemon-reload
 
 # 3. Habilitar e iniciar el servicio
 systemctl enable ${NOMBRE_SERVICIO}
+systemctl start ${NOMBRE_SERVICIO}

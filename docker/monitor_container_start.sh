@@ -1,21 +1,49 @@
 #!/bin/bash
 
-# Configuración
+# --- CONFIGURACIÓN DINÁMICA ---
+# Obtiene la ruta de la carpeta donde reside este script
+SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+
+# --- CONFIGURACIÓN ---
 NPM_CONTAINER="ix-nginx-proxy-manager-nginx-proxy-manager-1"
-SCRIPT_CONEXION="./connect_npm_to_all_networks.sh"
+SCRIPT_FILE="$SCRIPT_DIR/connect_npm_to_all_networks.sh"
+PIDFILE="/tmp/docker_events_monitor.pid"
 
-echo "Escuchando eventos de Docker para conectar redes a $NPM_CONTAINER..."
+# --- VERIFICACIÓN DE INSTANCIA ÚNICA ---
+if [ -f $PIDFILE ]; then
+    PID=$(cat $PIDFILE)
+    if ps -p $PID > /dev/null 2>&1; then
+        echo "⚠️ El monitor ya está corriendo (PID: $PID). Saliendo."
+        exit 0
+    else
+        # Si el archivo existe pero el proceso no, lo borramos (limpieza tras crash)
+        rm $PIDFILE
+    fi
+fi
 
-# docker events filtra por el evento 'start'
+# Guardar el PID actual en el archivo
+echo $$ > $PIDFILE
+
+# Eliminar el archivo al salir (Ctrl+C o kill)
+trap "rm -f $PIDFILE; exit" INT TERM EXIT
+
+echo "🚀 Iniciando monitor de eventos Docker para $NPM_CONTAINER..."
+
+# --- BUCLE DE EVENTOS ---
 docker events --filter 'event=start' --format '{{.Actor.Attributes.name}}' | while read CONTAINER_NAME
 do
     echo "🔔 Se detectó inicio de contenedor: $CONTAINER_NAME"
     
-    # Si el que se levantó es el propio NPM, esperamos unos segundos a que esté listo
-    if [ "$CONTAINER_NAME" == "$NPM_CONTAINER" ]; then
-        sleep 5
-    fi
+    # Pausa breve para asegurar que la red del contenedor esté lista
+    sleep 2
 
-    # Ejecutamos el script de conexión que ya tenemos
-    bash "$SCRIPT_CONEXION"
+    # Ejecutar el script de conexión
+    if [ -f "$SCRIPT_FILE
+" ]; then
+        bash "$SCRIPT_FILE
+    "
+    else
+        echo "❌ Error: No se encontró $SCRIPT_FILE
+    "
+    fi
 done

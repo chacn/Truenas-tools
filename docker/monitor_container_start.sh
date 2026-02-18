@@ -29,6 +29,13 @@ trap "rm -f $PIDFILE; exit" INT TERM EXIT
 
 echo "🚀 Iniciando monitor de eventos Docker para $NPM_CONTAINER..."
 
+# Siempre ejecutar el script al iniciar el monitor para asegurar que NPM esté conectado a las redes si ya está corriendo
+if [ -f "$SCRIPT_FILE" ]; then
+    bash "$SCRIPT_FILE"
+else
+    echo "❌ Error: No se encontró $SCRIPT_FILE"
+fi
+
 # --- BUCLE DE EVENTOS ---
 docker events --filter 'event=start' --format '{{.Actor.Attributes.name}}' | while read CONTAINER_NAME
 do

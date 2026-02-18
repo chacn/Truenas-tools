@@ -57,7 +57,7 @@ Para finalizar el proceso de forma limpia:
 ```bash
 systemctl stop npm_network_monitor
 ```
-#### ▶️ Ejecutar en modo debugging
+#### 🪲 Ejecutar en modo debugging
 Si prefieres ejecutar el monitor manualmente (por debugging) puedes hacerlo llamando directamente al script, primero asegurando que el servicio de systemd esté detenido para evitar conflictos.
 
 ```bash

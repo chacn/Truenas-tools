@@ -38,12 +38,9 @@ do
     sleep 2
 
     # Ejecutar el script de conexión
-    if [ -f "$SCRIPT_FILE
-" ]; then
-        bash "$SCRIPT_FILE
-    "
+    if [ -f "$SCRIPT_FILE" ]; then
+        bash "$SCRIPT_FILE"
     else
-        echo "❌ Error: No se encontró $SCRIPT_FILE
-    "
+        echo "❌ Error: No se encontró $SCRIPT_FILE"
     fi
 done

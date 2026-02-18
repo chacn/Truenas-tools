@@ -1,14 +1,14 @@
 # Truenas Tools
 Este repositorio contiene herramientas y scripts para facilitar la administracion de TrueNAS SCALE, especialmente en la gestión de contenedores Docker y aplicaciones relacionadas.
 
-## 🚀 Habilitar DNS de docker para Nginx Proxy Manager
+## 🔗 Habilitar DNS de docker para Nginx Proxy Manager
 
 Este script automatiza la conexión de **Nginx Proxy Manager** a las redes internas de todas las aplicaciones de Docker en TrueNAS 25.04.2 (Electric Eel), permitiendo la resolución DNS interna entre contenedores usando el nombre del contenedor como hostname.
-### 🧩 Archivos necesarios
+### 🗃️ Archivos necesarios
 * <code>monitor_container_start.sh</code> - Monitorea eventos de inicio de contenedores y ejecuta el script de conexión.
 * <code>connect_npm_to_all_networks.sh</code> - Conecta el contenedor de NPM a todas las redes internas de Docker.
 
-### 📋 Configuración en TrueNAS
+### 🛠️ Configuración en TrueNAS
 1. **Repo**: Clona el repositorio dentro de algun dataset i.e. <code>/mnt/tank/</code>
    ```bash
    git clone https://github.com/chacn/Truenas-tools.git /mnt/tank/Truenas-tools

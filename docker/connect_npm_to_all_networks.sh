@@ -26,15 +26,13 @@ for NET in $NETWORKS; do
     if [ -z "$IS_CONNECTED" ]; then
         echo "🔗 Conectando a red: $NET..."
         if ! docker network connect "$NET" "$NPM_CONTAINER" 2>/dev/null; then
-            echo "❌  Fallo al conectar."
+            echo "❌  Fallo al conectar: $NET"
             STATUS=false
         fi
-    else
-        echo "✅ Ya conectado a: $NET"
+    #else
+    #    echo "✅ Ya conectado a: $NET"
     fi
 done
-
-echo "--- Proceso finalizado ---"
 
 if [ "$STATUS" != "true" ]; then
     echo "❌ ERROR: No se pudo conectar el contenedor a todas las redes, revisa el log"

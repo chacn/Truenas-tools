@@ -3,7 +3,7 @@
 # 1. Nombre del contenedor de NPM
 NPM_CONTAINER="ix-nginx-proxy-manager-custom-nginx-proxy-manager-custom-1"
 
-echo "--- Verificando estado de $NPM_CONTAINER ---"
+echo "Verificando estado de $NPM_CONTAINER"
 
 # 2. Comprobar si el contenedor existe y está corriendo
 STATUS=$(docker inspect -f '{{.State.Running}}' "$NPM_CONTAINER" 2>/dev/null)
@@ -14,7 +14,7 @@ if [ "$STATUS" != "true" ]; then
     exit 1
 fi
 
-echo "✅ Contenedor activo. Buscando redes..."
+echo "Contenedor activo. Buscando redes..."
 
 # 3. Obtener redes (excluyendo sistema)
 NETWORKS=$(docker network ls --format "{{.Name}}" | grep -vE "^bridge$|^host$|^none$")
@@ -37,4 +37,9 @@ done
 if [ "$STATUS" != "true" ]; then
     echo "❌ ERROR: No se pudo conectar el contenedor a todas las redes, revisa el log"
     exit 1
+else
+    # Contar el número total de redes conectadas actualmente al contenedor
+    CONNECTED_COUNT=$(docker inspect -f '{{len .NetworkSettings.Networks}}' "$NPM_CONTAINER")
+    echo "✅ Conexión a $CONNECTED_COUNT redes completada sin errores."
+
 fi

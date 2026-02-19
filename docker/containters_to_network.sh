@@ -3,8 +3,6 @@
 # Nombre de la red destino
 TARGET_NETWORK="truenas_common_net"
 
-echo "Verificando Docker y la red destino: $TARGET_NETWORK"
-
 # 1. Crear la red si no existe
 if ! docker network inspect "$TARGET_NETWORK" >/dev/null 2>&1; then
     if ! docker network create "$TARGET_NETWORK" >/dev/null 2>&1; then
@@ -13,8 +11,6 @@ if ! docker network inspect "$TARGET_NETWORK" >/dev/null 2>&1; then
     fi
     echo "✅ Red '$TARGET_NETWORK' creada."
 fi
-
-echo "Obteniendo lista de contenedores..."
 
 # 2. Obtener todos los contenedores (incluye detenidos)
 CONTAINERS=$(docker ps -q)
@@ -38,7 +34,7 @@ for CID in $CONTAINERS; do
 
     if [ -z "$IS_CONNECTED" ]; then
         if docker network connect "$TARGET_NETWORK" "$CID" 2>/dev/null; then
-            echo "✅ Conectado: $CONTAINER_NAME"
+            echo "🔗 Conectado: $CONTAINER_NAME"
             CONNECTED_COUNT=$((CONNECTED_COUNT+1))
         else
             echo "❌ Fallo al conectar: $CONTAINER_NAME (ID: $CID)"
@@ -48,11 +44,6 @@ for CID in $CONTAINERS; do
         SKIPPED_COUNT=$((SKIPPED_COUNT+1))
     fi
 done
-
-echo
-echo "Resumen:"
-echo "  Conectados: $CONNECTED_COUNT"
-echo "  Saltados (ya conectados): $SKIPPED_COUNT"
 
 if [ "$FAILED" = true ]; then
     echo "❌ ERROR: Alguna(s) conexión(es) fallaron."

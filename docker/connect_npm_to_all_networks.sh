@@ -29,8 +29,8 @@ for NET in $NETWORKS; do
             echo "❌  Fallo al conectar: $NET"
             STATUS=false
         fi
-    #else
-    #    echo "✅ Ya conectado a: $NET"
+    else
+        echo "✅ Ya conectado a: $NET"
     fi
 done
 
